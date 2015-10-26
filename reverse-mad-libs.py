@@ -1,9 +1,9 @@
 # ------------- BLANKS -------------
 
-blankList = ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"]
+blank_list = ["Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7"]
 
 # ------------- EASY -------------
-easyLevel = ('EASY: Linguistics is the scientific study of Q1 and '
+easy_level = ('EASY: Linguistics is the scientific study of Q1 and '
             'their structures. There are 4 main branches of theoretical linguistics. '
             'Q2 is the study of sound systems. Q3 is the study '
             'of words and affixes, and how these are put together '
@@ -12,16 +12,14 @@ easyLevel = ('EASY: Linguistics is the scientific study of Q1 and '
             'the study of meaning.'
             )
 
-easyAnswers = [
-            'languages', # 1
-            'phonology', # 2
-            'morphology', # 3
-            'syntax', # 4
-            'semantics', # 5
-            ]
+easy_answers = ['languages', # 1
+                'phonology', # 2
+                'morphology', # 3
+                'syntax', # 4
+                'semantics'] # 5
 
 # ------------- MEDIUM -------------
-mediumLevel = ('MEDIUM: Phonologists distinguish between two '
+medium_level = ('MEDIUM: Phonologists distinguish between two '
             'different sound categories, phonemes and '
             'allophones. Q1 are phones that are '
             'perceived as the same sound by speakers '
@@ -41,18 +39,16 @@ mediumLevel = ('MEDIUM: Phonologists distinguish between two '
             'such as [s] or [z] ("horses"); and [z], in most other places. '
             )
 
-mediumAnswers = [
-            'allophones', # 1
-            'phonemes', # 2
-            'complementary', # 3
-            'free', # 4
-            'allomorph', # 5
-            'voiceless', # 6
-            'fricatives', # 7
-            ]
+medium_answers = ['allophones', # 1
+                  'phonemes', # 2
+                  'complementary', # 3
+                  'free', # 4
+                  'allomorph', # 5
+                  'voiceless', # 6
+                  'fricatives'] # 7
 
 # ------------- HARD -------------
-hardLevel = ('HARD: Historical linguists study language change. '
+hard_level = ('HARD: Historical linguists study language change. '
             'One common method for doing this is called Q1 '
             'linguistics. This method involves comparing languages '
             'known or suspected to be related in order to determine '
@@ -71,53 +67,69 @@ hardLevel = ('HARD: Historical linguists study language change. '
             'around 3,500 to 3,200 years ago.'
             )
 
-hardAnswers = [
-            'comparative', # 1
-            'germanic', # 2
-            'indo-european', # 3
-            'romance', # 4
-            'celtic', # 5
-            'indo-iranian', # 6
-            'anatolian' # 7
-            ]
+hard_answers = ['comparative', # 1
+                'germanic', # 2
+                'indo-european', # 3
+                'romance', # 4
+                'celtic', # 5
+                'indo-iranian', # 6
+                'anatolian'] # 7
 
 # ------------- MAIN FUNCTIONS -------------
 
-# Prompts the user to choose level. Calls the play function for the given choice,
-# or prompts user to try again if they have made an invalid choice.
-def chooseLevel():
+'''Prompts the user to choose level. Calls the play function for the given choice,
+or prompts user to try again if they have made an invalid choice.'''
+def choose_level():
     choice = raw_input("Pick a level: easy (E), medium (M), or hard (H): ")
     choice = choice.lower()
     while True:
         if choice == 'e' or choice == 'easy':
-            play(easyLevel, easyAnswers)
+            play(easy_level, easy_answers)
             break
         if choice == 'm' or choice == 'medium':
-            play(mediumLevel, mediumAnswers)
+            play(medium_level, medium_answers)
             break
         if choice == 'h' or choice == 'hard':
-            play(hardLevel, hardAnswers)
+            play(hard_level, hard_answers)
             break
         choice = raw_input("Invalid choice. Pick E, M, or H: ")
 
+'''Takes two inputs, the level choice and answer, determined in choose_level
+function. Uses these inputs to loop through get_answer function and fill_in_answer
+function, increasing the index of answers and blank_list by 1 after
+completion of each loop.'''
+def play(level, answers):
+    print level
+#    print "FOR TESTING PURPOSES, HERE ARE THE ANSWERS: " + ", ".join(answers)
+    index = 0
+    while index < len(answers):
+        get_answer(answers[index], blank_list[index])
+        level = fill_in_answer(level, answers[index], blank_list[index])
+        print level
+        index += 1
+    print "Hooray! You finished the level!"
 
-# Prompts user to try answers until one of them matches the correct one.
-def getAnswer(answer, blank):
-    userInput = raw_input("What is the answer to " + blank + "?: ")
-    userInput = userInput.lower()
+'''Takes user input, converted to lower case, and compares it to the answer.
+If correct, prints correct. If incorrect, prompts user to try again.'''
+def get_answer(answer, blank):
+    user_input = raw_input("What is the answer to " + blank + "?: ")
+    user_input = user_input.lower()
     while True:
-        if userInput == answer:
+        if user_input == answer:
             print "You're correct!"
             break
-        userInput = raw_input("Try again. What is the answer to " + blank + "?: ")
+        user_input = raw_input("Try again. What is the answer to " + blank + "?: ")
 
-# Replaces the blanks with its equivalent in the answer list of the level.
-def fillInAnswer(level, answerListItem, blankItem):
+'''Splits the level text (e.g., easy_level) into a list, then loops through the
+list. If the word is a blank (eg, Q1, q2, etc.), the blank is replaced with the
+answer and appended to replaced list. Otherwise, the word is appended to replaced
+without change.'''
+def fill_in_answer(level, answer_list_item, blank_item):
     replaced = []
     level = level.split()
     for word in level:
-        if blankItem in word:
-            word = word.replace(blankItem, answerListItem)
+        if blank_item in word:
+            word = word.replace(blank_item, answer_list_item)
             word = word.upper()
             replaced.append(word)
         else:
@@ -125,21 +137,8 @@ def fillInAnswer(level, answerListItem, blankItem):
     replaced = " ".join(replaced)
     return replaced
 
-# Plays the game by looping through getAnswer function and fillInAnswer
-# function and increasing the index of answers and blankList by one after
-# completion of each loop.
-def play(level, answers):
-    print level
-#    print "FOR TESTING PURPOSES, HERE ARE THE ANSWERS: " + ", ".join(answers)
-    index = 0
-    while index < len(answers):
-        getAnswer(answers[index], blankList[index])
-        level = fillInAnswer(level, answers[index], blankList[index])
-        print level
-        index += 1
-    print "Hooray! You finished the level!"
-
 # ------------- PLAY THE GAME -------------
 print ("Welcome to Noelle's reverse madlibs game. This\n"
     "game will help you review linguistics vocabulary.\n")
-chooseLevel()
+
+choose_level()
